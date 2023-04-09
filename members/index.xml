@@ -1,33 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>M53</title>
-    <link>https://m53ctf.github.io/</link>
-    <description>Recent content on M53</description>
+    <title>Members on M53</title>
+    <link>https://m53ctf.github.io/members/</link>
+    <description>Recent content in Members on M53</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Sun, 09 Apr 2023 21:01:30 +0800</lastBuildDate><atom:link href="https://m53ctf.github.io/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>[VishwaCTF] Ethereal Crackme</title>
-      <link>https://m53ctf.github.io/posts/vishwactf2023-etherealcrackme/</link>
-      <pubDate>Sun, 09 Apr 2023 21:01:30 +0800</pubDate>
-      
-      <guid>https://m53ctf.github.io/posts/vishwactf2023-etherealcrackme/</guid>
-      <description>This challenge provided a two windows executable files called HauntedImage.exe and HauntedCursor.exe.
-Please note that I did not solve this challenge during the competition, only solved it after the competition without completely understanding the challenge.
-HauntedImage.exe Analysis Looking at the binary we noticed that it was huge and looks unlikely to be reverse within 1-2 days (atleast for me). Therefore we chose to execute the binary directly, and it will generate a corrupted image called result.</description>
-    </item>
-    
-    <item>
-      <title>Firstpost</title>
-      <link>https://m53ctf.github.io/posts/firstpost/</link>
-      <pubDate>Thu, 06 Apr 2023 01:20:54 +0800</pubDate>
-      
-      <guid>https://m53ctf.github.io/posts/firstpost/</guid>
-      <description>ansdkanskd</description>
-    </item>
-    
+    <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright><atom:link href="https://m53ctf.github.io/members/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title></title>
       <link>https://m53ctf.github.io/members/callmeks/</link>

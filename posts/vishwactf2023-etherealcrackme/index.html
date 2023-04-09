@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="">
+<meta name="description" content="This challenge provided a two windows executable files called HauntedImage.exe and HauntedCursor.exe.
+Please note that I did not solve this challenge during the competition, only solved it after the competition without completely understanding the challenge.
+HauntedImage.exe Analysis Looking at the binary we noticed that it was huge and looks unlikely to be reverse within 1-2 days (atleast for me). Therefore we chose to execute the binary directly, and it will generate a corrupted image called result." />
+<meta name="keywords" content=", VISHWACTF, REV, 2023" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="" />
+<link rel="canonical" href="https://m53ctf.github.io/posts/vishwactf2023-etherealcrackme/" />
+
+
+    <title>
+        
+            [VishwaCTF] Ethereal Crackme :: M53 
+        
+    </title>
+
+
+
+
+
+<link rel="stylesheet" href="/main.b78c3be9451dc4ca61ca377f3dc2cf2e6345a44c2bae46216a322ef366daa399.css" integrity="sha256-t4w76UUdxMphyjd/PcLPLmNFpEwrrkYhajIu82bao5k=">
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="msapplication-TileColor" content="">
+
+
+<meta itemprop="name" content="[VishwaCTF] Ethereal Crackme">
+<meta itemprop="description" content="This challenge provided a two windows executable files called HauntedImage.exe and HauntedCursor.exe.
+Please note that I did not solve this challenge during the competition, only solved it after the competition without completely understanding the challenge.
+HauntedImage.exe Analysis Looking at the binary we noticed that it was huge and looks unlikely to be reverse within 1-2 days (atleast for me). Therefore we chose to execute the binary directly, and it will generate a corrupted image called result."><meta itemprop="datePublished" content="2023-04-09T21:01:30+08:00" />
+<meta itemprop="dateModified" content="2023-04-09T21:01:30+08:00" />
+<meta itemprop="wordCount" content="1069"><meta itemprop="image" content="https://m53ctf.github.io/"/>
+<meta itemprop="keywords" content="VISHWACTF,REV,2023," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://m53ctf.github.io/"/>
+
+<meta name="twitter:title" content="[VishwaCTF] Ethereal Crackme"/>
+<meta name="twitter:description" content="This challenge provided a two windows executable files called HauntedImage.exe and HauntedCursor.exe.
+Please note that I did not solve this challenge during the competition, only solved it after the competition without completely understanding the challenge.
+HauntedImage.exe Analysis Looking at the binary we noticed that it was huge and looks unlikely to be reverse within 1-2 days (atleast for me). Therefore we chose to execute the binary directly, and it will generate a corrupted image called result."/>
+
+
+
+    <meta property="og:title" content="[VishwaCTF] Ethereal Crackme" />
+<meta property="og:description" content="This challenge provided a two windows executable files called HauntedImage.exe and HauntedCursor.exe.
+Please note that I did not solve this challenge during the competition, only solved it after the competition without completely understanding the challenge.
+HauntedImage.exe Analysis Looking at the binary we noticed that it was huge and looks unlikely to be reverse within 1-2 days (atleast for me). Therefore we chose to execute the binary directly, and it will generate a corrupted image called result." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://m53ctf.github.io/posts/vishwactf2023-etherealcrackme/" /><meta property="og:image" content="https://m53ctf.github.io/"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-04-09T21:01:30+08:00" />
+<meta property="article:modified_time" content="2023-04-09T21:01:30+08:00" /><meta property="og:site_name" content="M53" />
+
+
+
+
+
+
+    <meta property="article:published_time" content="2023-04-09 21:01:30 &#43;0800 &#43;08" />
+
+
+
+
+
+
+
+
+
+
+
+    </head>
+
+    
+        <body>
+    
+    
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text ">
+                ./M53</span>
+            <span class="logo__cursor" style=
+                  "
+                   
+                   ">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="/posts">Blog</a></li><li><a href="/members">Members</a></li><li><a href="/about">About</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+                <span class="theme-toggle not-selectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+   <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+   3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+   13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+ </svg></span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+  <main class="post">
+
+    <div class="post-info">
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        6 minutes
+        
+      </p>
+      <p>Original Source: <a href="https://tzion0.github.io/posts/vishwactf2023-etherealcrackme/">https://tzion0.github.io/posts/vishwactf2023-etherealcrackme/</a></p>
+    </div>
+
+    <article>
+      <h1 class="post-title">
+        <a href="https://m53ctf.github.io/posts/vishwactf2023-etherealcrackme/">[VishwaCTF] Ethereal Crackme</a>
+      </h1>
+
+      
+
+      
+
+      
+
+      <div class="post-content">
+        <p>This challenge provided a two windows executable files called <code>HauntedImage.exe</code> and <code>HauntedCursor.exe</code>.</p>
+<p>Please note that I did not solve this challenge during the competition, only solved it after the competition without completely understanding the challenge.</p>
+<h2 id="hauntedimageexe-analysis">HauntedImage.exe Analysis</h2>
+<p>Looking at the binary we noticed that it was huge and looks unlikely to be reverse within 1-2 days (atleast for me). Therefore we chose to execute the binary directly, and it will generate a corrupted image called <code>result.jpg</code>. Looking at <code>result.jpg</code> in Hex Editor tell us that it was not related to a valid image at all. One hint provided by organizer: &ldquo;The image is not corrupted&rdquo; indirectly tell us that we should try out few things. What we did is we simply execute the <code>HauntedImage.exe</code> again, but this time specifying the <code>result.jpg</code> as argument. And the <code>result.jpg</code> will changed to a valid picture with an URL in it like following:</p>
+<p><img src="/images/ctfs/vishwactf2023-etherealcrackme/1.png" alt="IMG"></p>
+<p>The URL will lead us to download a Cursor Image file. And that&rsquo;s the information I managed to get during the CTF for this binary. Only after the CTF I found out that running the binary again with the cursor image file will generate the Ouija Board image, which will be useful but not necessary for us.</p>
+<h2 id="hauntedcursorexe-analysis">HauntedCursor.exe Analysis</h2>
+<p>TLDR: This binary is in charge for pointing our cursor to the correct position based on the Ouija Board.</p>
+<p>The first part of the binary is basically finding for a window called <code>MSPaintApp</code>. That means that in order to exit out of this loop, we have to open MSPaintApp.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span><span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    lpWideCharStr <span style="color:#f92672">=</span> <span style="color:#e6db74">L</span><span style="color:#e6db74">&#34;MSPaintApp&#34;</span>;
+</span></span><span style="display:flex;"><span>    cbMultiByte <span style="color:#f92672">=</span> <span style="color:#a6e22e">WideCharToMultiByte</span>(<span style="color:#ae81ff">0xFDE9u</span>, <span style="color:#ae81ff">0</span>, <span style="color:#e6db74">L</span><span style="color:#e6db74">&#34;MSPaintApp&#34;</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>i64, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>i64, <span style="color:#ae81ff">0</span>i64);
+</span></span><span style="display:flex;"><span>    lpMultiByteStr <span style="color:#f92672">=</span> (LPSTR)operator new[](cbMultiByte);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">WideCharToMultiByte</span>(<span style="color:#ae81ff">0xFDE9u</span>, <span style="color:#ae81ff">0</span>, lpWideCharStr, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, lpMultiByteStr, cbMultiByte, <span style="color:#ae81ff">0</span>i64, <span style="color:#ae81ff">0</span>i64);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> ( <span style="color:#f92672">!</span><span style="color:#a6e22e">FindWindowA</span>(lpMultiByteStr, <span style="color:#ae81ff">0</span>i64) );
+</span></span></code></pre></div><p>The following part of the binary in main function will render the string <code>&quot;I NEED TO TALK TO YOU BUT I CAN DO IT ONLY THROUGH THE OUIJA BOARD.....\nPress enter to go to the next step..&quot;</code> on the screen and wait for our Enter key input to proceed. After that, the program will check for number of arguments we provided, convert the argument to integer and pass to function <code>checkSecondStep(v18);</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span>Gdiplus<span style="color:#f92672">::</span>GdiplusStartupInput<span style="color:#f92672">::</span><span style="color:#a6e22e">GdiplusStartupInput</span>((Gdiplus<span style="color:#f92672">::</span>GdiplusStartupInput <span style="color:#f92672">*</span>)v15, <span style="color:#ae81ff">0</span>i64, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">GdiplusStartup</span>(v14, v15, <span style="color:#ae81ff">0</span>i64);
+</span></span><span style="display:flex;"><span>DC <span style="color:#f92672">=</span> <span style="color:#a6e22e">GetDC</span>(<span style="color:#ae81ff">0</span>i64);
+</span></span><span style="display:flex;"><span>Gdiplus<span style="color:#f92672">::</span>Graphics<span style="color:#f92672">::</span><span style="color:#a6e22e">Graphics</span>((Gdiplus<span style="color:#f92672">::</span>Graphics <span style="color:#f92672">*</span>)v13, DC);
+</span></span><span style="display:flex;"><span>Gdiplus<span style="color:#f92672">::</span>FontFamily<span style="color:#f92672">::</span><span style="color:#a6e22e">FontFamily</span>(v12, <span style="color:#e6db74">L</span><span style="color:#e6db74">&#34;Times New Roman&#34;</span>, <span style="color:#ae81ff">0</span>i64);
+</span></span><span style="display:flex;"><span>Gdiplus<span style="color:#f92672">::</span>Font<span style="color:#f92672">::</span><span style="color:#a6e22e">Font</span>((<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span>)v11, (<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span>)v12, v3, <span style="color:#ae81ff">16</span>, <span style="color:#ae81ff">2</span>);
+</span></span><span style="display:flex;"><span>Gdiplus<span style="color:#f92672">::</span>PointF<span style="color:#f92672">::</span><span style="color:#a6e22e">PointF</span>((Gdiplus<span style="color:#f92672">::</span>PointF <span style="color:#f92672">*</span>)v10, <span style="color:#ae81ff">500.0</span>, <span style="color:#ae81ff">500.0</span>);
+</span></span><span style="display:flex;"><span>Gdiplus<span style="color:#f92672">::</span>Color<span style="color:#f92672">::</span><span style="color:#a6e22e">Color</span>((Gdiplus<span style="color:#f92672">::</span>Color <span style="color:#f92672">*</span>)v16, <span style="color:#ae81ff">0xFFu</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0xFFu</span>);
+</span></span><span style="display:flex;"><span>Gdiplus<span style="color:#f92672">::</span>SolidBrush<span style="color:#f92672">::</span><span style="color:#a6e22e">SolidBrush</span>((Gdiplus<span style="color:#f92672">::</span>SolidBrush <span style="color:#f92672">*</span>)v9, (<span style="color:#66d9ef">const</span> Gdiplus<span style="color:#f92672">::</span>Color <span style="color:#f92672">*</span>)v16);
+</span></span><span style="display:flex;"><span>Gdiplus<span style="color:#f92672">::</span>Graphics<span style="color:#f92672">::</span><span style="color:#a6e22e">DrawString</span>(
+</span></span><span style="display:flex;"><span>    (Gdiplus<span style="color:#f92672">::</span>Graphics <span style="color:#f92672">*</span>)v13,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">L</span><span style="color:#e6db74">&#34;I NEED TO TALK TO YOU BUT I CAN DO IT ONLY THROUGH THE OUIJA BOARD.....</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">Press enter to go to the next step..&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>    (<span style="color:#66d9ef">const</span> Gdiplus<span style="color:#f92672">::</span>Font <span style="color:#f92672">*</span>)v11,
+</span></span><span style="display:flex;"><span>    (<span style="color:#66d9ef">const</span> Gdiplus<span style="color:#f92672">::</span>PointF <span style="color:#f92672">*</span>)v10,
+</span></span><span style="display:flex;"><span>    (<span style="color:#66d9ef">const</span> Gdiplus<span style="color:#f92672">::</span>Brush <span style="color:#f92672">*</span>)v9);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> ( <span style="color:#a6e22e">GetAsyncKeyState</span>(<span style="color:#ae81ff">13</span>) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">||</span> v24 )
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    v24 <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">_IAT_start__</span>(DC);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> ( argc <span style="color:#f92672">==</span> <span style="color:#ae81ff">2</span> )
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>allocator<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">char</span><span style="color:#f92672">&gt;::</span><span style="color:#a6e22e">allocator</span>(<span style="color:#f92672">&amp;</span>v17);
+</span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>__cxx11<span style="color:#f92672">::</span>basic_string<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">char</span>,std<span style="color:#f92672">::</span>char_traits<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">char</span><span style="color:#f92672">&gt;</span>,std<span style="color:#f92672">::</span>allocator<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">char</span><span style="color:#f92672">&gt;&gt;::</span><span style="color:#a6e22e">basic_string</span>(v8, argv[<span style="color:#ae81ff">1</span>], <span style="color:#f92672">&amp;</span>v17);
+</span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>allocator<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">char</span><span style="color:#f92672">&gt;::~</span><span style="color:#a6e22e">allocator</span>(<span style="color:#f92672">&amp;</span>v17);
+</span></span><span style="display:flex;"><span>    v5 <span style="color:#f92672">=</span> (<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>)std<span style="color:#f92672">::</span>__cxx11<span style="color:#f92672">::</span>basic_string<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">char</span>,std<span style="color:#f92672">::</span>char_traits<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">char</span><span style="color:#f92672">&gt;</span>,std<span style="color:#f92672">::</span>allocator<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">char</span><span style="color:#f92672">&gt;&gt;::</span><span style="color:#a6e22e">c_str</span>(v8);
+</span></span><span style="display:flex;"><span>    v18 <span style="color:#f92672">=</span> <span style="color:#a6e22e">atoi</span>(v5);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">checkSecondStep</span>(v18);
+</span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>__cxx11<span style="color:#f92672">::</span>basic_string<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">char</span>,std<span style="color:#f92672">::</span>char_traits<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">char</span><span style="color:#f92672">&gt;</span>,std<span style="color:#f92672">::</span>allocator<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">char</span><span style="color:#f92672">&gt;&gt;::~</span><span style="color:#a6e22e">basic_string</span>(v8);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">checkSecondStep</span>(<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    v6 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    v6 <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Looking into <code>checkSecondStep</code> function, it basically executing the <code>movePointer</code> function in while loop:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span><span style="color:#66d9ef">__int64</span> <span style="color:#66d9ef">__fastcall</span> <span style="color:#a6e22e">checkSecondStep</span>(<span style="color:#66d9ef">int</span> a1)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">while</span> ( <span style="color:#f92672">!</span>(<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span>)<span style="color:#a6e22e">movePointer</span>(a1) );
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>i64;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Looking into <code>movePointer</code> function, it basically go through some Desktop Window checking, extract pixel from it, do some comparison and lastly set the cursor pointer position to the flag characters:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span><span style="color:#66d9ef">__int64</span> <span style="color:#66d9ef">__fastcall</span> <span style="color:#a6e22e">movePointer</span>(<span style="color:#66d9ef">int</span> a1)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">struct</span> tagPOINT Point; <span style="color:#75715e">// [rsp+24h] [rbp-4Ch] BYREF
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  LONG y; <span style="color:#75715e">// [rsp+2Ch] [rbp-44h]
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  LONG x; <span style="color:#75715e">// [rsp+30h] [rbp-40h]
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">int</span> v5; <span style="color:#75715e">// [rsp+34h] [rbp-3Ch]
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">int</span> v6; <span style="color:#75715e">// [rsp+38h] [rbp-38h]
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">int</span> v7; <span style="color:#75715e">// [rsp+3Ch] [rbp-34h]
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">int</span> v8; <span style="color:#75715e">// [rsp+40h] [rbp-30h]
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  COLORREF v9; <span style="color:#75715e">// [rsp+44h] [rbp-2Ch]
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  HDC hDC; <span style="color:#75715e">// [rsp+48h] [rbp-28h]
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  HWND DesktopWindow; <span style="color:#75715e">// [rsp+50h] [rbp-20h]
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  COLORREF Pixel; <span style="color:#75715e">// [rsp+5Ch] [rbp-14h]
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  HDC hdc; <span style="color:#75715e">// [rsp+60h] [rbp-10h]
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  HWND hWnd; <span style="color:#75715e">// [rsp+68h] [rbp-8h]
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>  hWnd <span style="color:#f92672">=</span> <span style="color:#a6e22e">GetDesktopWindow</span>();
+</span></span><span style="display:flex;"><span>  hdc <span style="color:#f92672">=</span> <span style="color:#a6e22e">GetDC</span>(hWnd);
+</span></span><span style="display:flex;"><span>  Pixel <span style="color:#f92672">=</span> <span style="color:#a6e22e">GetPixel</span>(hdc, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">ReleaseDC</span>(hWnd, hdc);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> ( (_BYTE)Pixel <span style="color:#f92672">==</span> <span style="color:#ae81ff">38</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">*</span>(_WORD <span style="color:#f92672">*</span>)((<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>)<span style="color:#f92672">&amp;</span>Pixel <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">10302</span> )
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    DesktopWindow <span style="color:#f92672">=</span> <span style="color:#a6e22e">GetDesktopWindow</span>();
+</span></span><span style="display:flex;"><span>    hDC <span style="color:#f92672">=</span> <span style="color:#a6e22e">GetDC</span>(DesktopWindow);
+</span></span><span style="display:flex;"><span>    v9 <span style="color:#f92672">=</span> <span style="color:#a6e22e">GetPixel</span>(hDC, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>    v8 <span style="color:#f92672">=</span> (<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">__int8</span>)v9;
+</span></span><span style="display:flex;"><span>    v7 <span style="color:#f92672">=</span> <span style="color:#a6e22e">BYTE1</span>(v9);
+</span></span><span style="display:flex;"><span>    v6 <span style="color:#f92672">=</span> <span style="color:#a6e22e">BYTE2</span>(v9);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">ReleaseDC</span>(DesktopWindow, hDC);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> ( (_BYTE)v9 <span style="color:#f92672">==</span> <span style="color:#ae81ff">62</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">*</span>(_WORD <span style="color:#f92672">*</span>)((<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>)<span style="color:#f92672">&amp;</span>v9 <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">11592</span> )
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      v5 <span style="color:#f92672">=</span> <span style="color:#ae81ff">645</span>;
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> ( a1 <span style="color:#f92672">%</span> <span style="color:#ae81ff">645</span> )
+</span></span><span style="display:flex;"><span>      {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">while</span> ( <span style="color:#ae81ff">1</span> )
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">SetCursorPos</span>(<span style="color:#ae81ff">9999</span>, <span style="color:#ae81ff">200</span>);
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">SetCursorPos</span>(<span style="color:#ae81ff">10000</span>, <span style="color:#ae81ff">10000</span>);
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">GetCursorPos</span>(<span style="color:#f92672">&amp;</span>Point);
+</span></span><span style="display:flex;"><span>      x <span style="color:#f92672">=</span> Point.x;
+</span></span><span style="display:flex;"><span>      y <span style="color:#f92672">=</span> Point.y;
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>      {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">SetCursorPos</span>((<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.25416666</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)x), (<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.56388891</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)y));
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">0x320u</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">SetCursorPos</span>((<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.75312501</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)x), (<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.74537039</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)y));
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">0x320u</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">SetCursorPos</span>((<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.78489584</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)x), (<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.44074073</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)y));
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">0x320u</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">SetCursorPos</span>((<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.48645833</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)x), (<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.49166667</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)y));
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">0x320u</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">SetCursorPos</span>((<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.34791666</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)x), (<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.72314817</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)y));
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">0x320u</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">SetCursorPos</span>((<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.36458334</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)x), (<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.51851851</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)y));
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">0x320u</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">SetCursorPos</span>((<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.48958334</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)x), (<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.3425926</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)y));
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">0x320u</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">SetCursorPos</span>((<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.34218749</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)x), (<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.74722224</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)y));
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">0x320u</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">SetCursorPos</span>((<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.61406249</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)x), (<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.36851853</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)y));
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">0x320u</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">SetCursorPos</span>((<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.45885417</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)x), (<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.73703706</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)y));
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">0x320u</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">SetCursorPos</span>((<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.48802084</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)x), (<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.50185186</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)y));
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">0x320u</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">SetCursorPos</span>((<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.24947916</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)x), (<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.55740738</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)y));
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">0x320u</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">SetCursorPos</span>((<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.74635416</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)x), (<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.74166667</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)y));
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">0x320u</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">SetCursorPos</span>((<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.61354166</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)x), (<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.34722221</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)y));
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">0x320u</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">SetCursorPos</span>((<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.15364583</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)x), (<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.66018516</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)y));
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">0x320u</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">SetCursorPos</span>((<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.48333332</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)x), (<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.49907407</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)y));
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">0x320u</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">SetCursorPos</span>((<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.34583333</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)x), (<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.74722224</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)y));
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">0x320u</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">SetCursorPos</span>((<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.37291667</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)x), (<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">float</span>)(<span style="color:#ae81ff">0.52407408</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">float</span>)y));
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">0x320u</span>);
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">while</span> ( <span style="color:#a6e22e">GetAsyncKeyState</span>(<span style="color:#ae81ff">13</span>) <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span> );
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>i64;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>i64;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>operator<span style="color:#f92672">&lt;&lt;&lt;</span>std<span style="color:#f92672">::</span>char_traits<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">char</span><span style="color:#f92672">&gt;&gt;</span>(refptr__ZSt4cout, <span style="color:#e6db74">&#34;Use the ouija board</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">0x12Cu</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>i64;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Honestly, I wasn&rsquo;t able to fulfill the conditions of Desktop Window it required to pass the check, therefore we will use debugger to bypass it by setting the RIP to the location where it start moving cursor. Moreover, the <code>a1</code>, which is the argument we have to provide will be use for a check eventually:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span>v5 <span style="color:#f92672">=</span> <span style="color:#ae81ff">645</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> ( a1 <span style="color:#f92672">%</span> <span style="color:#ae81ff">645</span> )
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> ( <span style="color:#ae81ff">1</span> ) <span style="color:#a6e22e">SetCursorPos</span>(<span style="color:#ae81ff">9999</span>, <span style="color:#ae81ff">200</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>With all the informations we obtained, we can start solving the challenge. First, open MSPaintApp and leave it aside. Next, open <code>HauntedCursor.exe</code> in your favourite debugger, set argument as <code>645</code> and set a breakpoint at <code>40155B</code> and run the program. Once you reached the breakpoint, change the RIP to <code>401673</code>:</p>
+<p><img src="/images/ctfs/vishwactf2023-etherealcrackme/2.png" alt="IMG"></p>
+<p>Before we run the program, we have to change our desktop wallpaper to the Ouija Board image we obtained earlier. imagine that if we wasn&rsquo;t able to obtain the Ouija Board earlier, we can simply download one from internet, it will work as well. Also, if you want to have more clearer cursor, you can change your cursor with the cursor image you obtained earlier.</p>
+<p>With everything set, run the program and the cursor will point to the flag character by character!</p>
+<h3 id="flag">Flag:</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-md" data-lang="md"><span style="display:flex;"><span>VishwaCTF{P0LT3RG3I5TP0INT3R}
+</span></span></code></pre></div>
+      </div>
+    </article>
+
+    <hr />
+
+    <div class="post-info">
+      
+    <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg>
+
+        <span class="tag"><a href="https://m53ctf.github.io/tags/vishwactf/">VISHWACTF</a></span>
+        <span class="tag"><a href="https://m53ctf.github.io/tags/rev/">REV</a></span>
+        <span class="tag"><a href="https://m53ctf.github.io/tags/2023/">2023</a></span>
+        
+    </p>
+
+      
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        1069 Words
+      </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        
+          2023-04-09 21:01
+        
+
+        
+          
+        
+      </p>
+    </div>
+
+    
+    <div class="pagination">
+        
+        <div class="pagination__title">
+            <span class="pagination__title-h">Read other posts</span>
+            <hr />
+        </div>
+        
+
+        <div class="pagination__buttons">
+            
+
+            
+            <span class="button next">
+                <a href="https://m53ctf.github.io/posts/firstpost/">
+                    <span class="button__text">Firstpost</span>
+                    <span class="button__icon">→</span>
+                </a>
+            </span>
+            
+        </div>
+    </div>
+
+
+    
+
+    
+
+  </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    
+    
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+<script type="text/javascript" src="/bundle.min.205d491810c28f95aa953fae884e1c27abe13fdf93ec63b882d0036b248d4a6282eb2d134e4e7225c6ad6e86db87b08488a361ca4a7383d01fcff43f3d57b9c3.js" integrity="sha512-IF1JGBDCj5WqlT&#43;uiE4cJ6vhP9&#43;T7GO4gtADaySNSmKC6y0TTk5yJcatbobbh7CEiKNhykpzg9Afz/Q/PVe5ww=="></script>
+
+
+
+    </body>
+</html>
